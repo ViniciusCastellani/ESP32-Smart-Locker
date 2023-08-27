@@ -48,10 +48,12 @@ void loop()
   if (Firebase.readStream(stream) && stream.to<bool>())
   {
     Serial.println("Cofre: Aberto");
+    digitalWrite(led_pin, HIGH);
   }
   else
   {
     Serial.println("Cofre: Fechado");
+    digitalWrite(led_pin, LOW);
   }
 
   delay(100);
