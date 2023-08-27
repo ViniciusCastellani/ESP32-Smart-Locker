@@ -11,12 +11,11 @@ const char *database_url = "DATABASE_URL";
 FirebaseData stream;
 
 // Outros.
-const int led_pin = 2;
+const int LED_PIN = 2;
 
 void setup()
 {
   Serial.begin(9600);
-  delay(1000);
 
   // WiFi Setup.
   WiFi.begin(wifi_ssid, wifi_password);
@@ -40,20 +39,20 @@ void setup()
   }
 
   // LED Setup.
-  pinMode(led_pin, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
 }
 
 void loop()
 {
-  if (Firebase.readStream(stream) && stream.to<bool>())
+  if (Firebase.ready() && Firebase.readStream(stream) && stream.to<bool>())
   {
     Serial.println("Cofre: Aberto");
-    digitalWrite(led_pin, HIGH);
+    digitalWrite(LED_PIN, HIGH);
   }
   else
   {
     Serial.println("Cofre: Fechado");
-    digitalWrite(led_pin, LOW);
+    digitalWrite(LED_PIN, LOW);
   }
 
   delay(100);
