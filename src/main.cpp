@@ -1,59 +1,52 @@
 #include <WiFi.h>
 #include <FirebaseESP32.h>
 
-// WiFi.
-const char *wifi_ssid = "WIFI_SSID";
-const char *wifi_password = "WIFI_PASSWORD";
+// * WiFi.
+const char *SSID = "WIFI_SSID";
+const char *PASSWORD = "WIFI_PASSWORD";
 
-// Firebase.
-const char *api_key = "API_KEY";
-const char *database_url = "DATABASE_URL";
-FirebaseData stream;
+// * Firebase.
+const char *URL = "FIREBASE_URL";
+const char *SECRET = "FIREBASE_SECRET";
+FirebaseData data;
 
-// Outros.
+// * Outros.
 const int LED_PIN = 2;
 
 void setup()
 {
+  // * Configuração de Outros.
   Serial.begin(9600);
+  pinMode(LED_PIN, OUTPUT);
 
-  // WiFi Setup.
-  WiFi.begin(wifi_ssid, wifi_password);
+  // * Configuração do Wi-Fi.
+  WiFi.begin(SSID, PASSWORD);
 
   while (WiFi.status() != WL_CONNECTED)
   {
-    Serial.println("Não conectado.");
-    delay(200);
+    delay(500);
+    Serial.println("[*] Conectando ao Wi-Fi.");
   }
 
-  Serial.println("Conectado à rede Wi-Fi.");
-  Serial.print("Endereço: ");
-  Serial.println(WiFi.localIP());
+  Serial.println("[+] Conectado à rede Wi-Fi.");
 
-  // Firebase Setup.
-  Firebase.begin(database_url, api_key);
+  // * Configuração do Firebase.
+  Firebase.begin(URL, SECRET);
 
-  if (Firebase.beginStream(stream, "cofre/aberto"))
+  if (Firebase.beginStream(data, "cofre/aberto"))
   {
-    Serial.println("A Stream começou.");
+    Serial.println("[+] Stream iniciada.");
   }
-
-  // LED Setup.
-  pinMode(LED_PIN, OUTPUT);
 }
 
 void loop()
 {
-  if (Firebase.ready() && Firebase.readStream(stream) && stream.to<bool>())
+  if (Firebase.ready() && Firebase.readStream(data) && data.to<bool>())
   {
-    Serial.println("Cofre: Aberto");
     digitalWrite(LED_PIN, HIGH);
   }
   else
   {
-    Serial.println("Cofre: Fechado");
     digitalWrite(LED_PIN, LOW);
   }
-
-  delay(100);
 }
