@@ -1,5 +1,6 @@
+#include <Arduino.h>
 #include <WiFi.h>
-#include <FirebaseESP32.h>
+#include <Firebase.h>
 
 // * WiFi.
 const char *SSID = "WIFI_SSID";
