@@ -10,6 +10,7 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "cstddef": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "*.tcc": "cpp"
     }
 }
